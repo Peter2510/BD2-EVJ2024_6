@@ -3,7 +3,7 @@
 
 Repositorio para la práctica y proyectos del laboratorio de Bases de Datos 2 USAC
 
-# Integrantes grupo  6
+# Integrantes grupo   6
 
 Randy Marcelino Sum Coyoy 201230463, 2253625030901
 
