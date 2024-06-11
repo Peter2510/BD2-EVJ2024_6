@@ -1,36 +1,31 @@
-CREATE DATABASE clinicaMedica;
-
-USE clinicaMedica;
-
-CREATE TABLE habitacion(
- idHabitacion INT NOT NULL,
- habitacion VARCHAR(50),
- PRIMARY KEY(idHabitacion)
+CREATE  database clinicaMedica;
+use clinicaMedica;
+create table habitacion(
+	idHabitacion int not null,
+	habitacion varchar(50),
+	primary key(idHabitacion)
 );
-
-CREATE TABLE paciente(
- idPaciente INT NOT NULL,
- edad INT,
- genero VARCHAR(20),
- PRIMARY KEY(idPaciente)
+create table paciente(
+	idPaciente int not null,
+	edad int,
+	genero varchar(20),
+	primary key(idPaciente)
 );
-
-CREATE TABLE log_actividad(
- id_log_actividad INT,
- timestampx VARCHAR(100),
- actividad VARCHAR(500),
- idPaciente INT,
- idHabitacion INT,
- PRIMARY KEY(id_log_actividad),
- FOREIGN key (idPaciente) REFERENCES paciente(idPaciente),
- FOREIGN key (idHabitacion) REFERENCES habitacion(idHabitacion)
+create table log_actividad(
+	id_log_actividad int not null auto_increment,
+	timestamp varchar(100),
+	actividad varchar(500),
+	idPaciente int,
+	idHabitacion int,
+	primary key(id_log_actividad),
+	foreign key (idPaciente) references paciente(idPaciente),
+	foreign key (idHabitacion) references habitacion(idHabitacion)
 );
-
-CREATE TABLE log_habitacion(
- timestampx VARCHAR(100),
- statusx VARCHAR(45),
- idHabitacion INT,
- PRIMARY KEY(idPaciente),
- FOREIGN KEY (idHabitacion) REFERENCES habitacion(idHabitacion)
+create table log_habitacion(
+	timestamp varchar(100),
+	status varchar(45),
+	idHabitacion int,
+	primary key(timestamp),
+	foreign key (idHabitacion) references habitacion(idHabitacion)
 );
 
