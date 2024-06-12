@@ -40,12 +40,8 @@ CREATE TABLE `habitacion` (
   `habitacion` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`idHabitacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-<<<<<<< HEAD
 /*!40101 SET character_set_client = @saved_cs_client */;
-=======
-/*!40101 SET character_set_client = @saved_cs_client */
-;
->>>>>>> alexis2
+
 
 --
 -- Dumping data for table `habitacion`
@@ -83,12 +79,9 @@ CREATE TABLE `log_actividad` (
   CONSTRAINT `log_actividad_ibfk_1` FOREIGN KEY (`idPaciente`) REFERENCES `paciente` (`idPaciente`),
   CONSTRAINT `log_actividad_ibfk_2` FOREIGN KEY (`idHabitacion`) REFERENCES `habitacion` (`idHabitacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-<<<<<<< HEAD
+
 /*!40101 SET character_set_client = @saved_cs_client */;
-=======
-/*!40101 SET character_set_client = @saved_cs_client */
-;
->>>>>>> alexis2
+
 
 --
 -- Dumping data for table `log_actividad`
@@ -177,14 +170,8 @@ CREATE TABLE `paciente` (
   `genero` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`idPaciente`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-<<<<<<< HEAD
 /*!40101 SET character_set_client = @saved_cs_client */;
-=======
 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */
-;
->>>>>>> alexis2
 
 --
 -- Dumping data for table `paciente`
@@ -215,16 +202,3 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */
 ;
 
-<<<<<<< HEAD
--- Dump completed on 2024-06-11 22:14:54
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
--- Dump completed on 2024-06-11  1:04:49
-=======
--- Dump completed on 2024-06-11 22:14:54
->>>>>>> 9932c33 (Cambios en los backups actividad 1)
-=======
--- Dump completed on 2024-06-11 22:14:54
->>>>>>> 96b6b35 (cambios de la actividad 3, se me fue una tabla de mas)
->>>>>>> alexis2
