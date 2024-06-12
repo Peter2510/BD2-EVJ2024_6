@@ -62,8 +62,8 @@ DROP TABLE IF EXISTS `log_actividad`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `log_actividad` (
-  `id_log_actividad` int(11) NOT NULL,
-  `timestampx` varchar(100) DEFAULT NULL,
+  `id_log_actividad` int(11) NOT NULL AUTO_INCREMENT,
+  `timestamp` varchar(100) DEFAULT NULL,
   `actividad` varchar(500) DEFAULT NULL,
   `idPaciente` int(11) DEFAULT NULL,
   `idHabitacion` int(11) DEFAULT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE `log_actividad` (
   KEY `idHabitacion` (`idHabitacion`),
   CONSTRAINT `log_actividad_ibfk_1` FOREIGN KEY (`idPaciente`) REFERENCES `paciente` (`idPaciente`),
   CONSTRAINT `log_actividad_ibfk_2` FOREIGN KEY (`idHabitacion`) REFERENCES `habitacion` (`idHabitacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33842 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,10 +92,10 @@ DROP TABLE IF EXISTS `log_habitacion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `log_habitacion` (
-  `timestampx` varchar(100) NOT NULL,
-  `statusx` varchar(45) DEFAULT NULL,
+  `timestamp` varchar(100) NOT NULL,
+  `status` varchar(45) DEFAULT NULL,
   `idHabitacion` int(11) DEFAULT NULL,
-  PRIMARY KEY (`timestampx`),
+  PRIMARY KEY (`timestamp`),
   KEY `idHabitacion` (`idHabitacion`),
   CONSTRAINT `log_habitacion_ibfk_1` FOREIGN KEY (`idHabitacion`) REFERENCES `habitacion` (`idHabitacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -154331,4 +154331,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-11  1:56:27
+-- Dump completed on 2024-06-11 23:07:09
