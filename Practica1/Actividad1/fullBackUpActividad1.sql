@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `habitacion`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `habitacion` (
   `idHabitacion` int NOT NULL,
-  `habitacion` varchar(50) DEFAULT NULL,
+  `habitacion` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`idHabitacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -47,9 +47,9 @@ DROP TABLE IF EXISTS `log_actividad`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `log_actividad` (
-  `id_log_actividad` int NOT NULL,
-  `timestampx` varchar(100) DEFAULT NULL,
-  `actividad` varchar(500) DEFAULT NULL,
+  `id_log_actividad` int NOT NULL AUTO_INCREMENT,
+  `timestamp` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `actividad` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idPaciente` int DEFAULT NULL,
   `idHabitacion` int DEFAULT NULL,
   PRIMARY KEY (`id_log_actividad`),
@@ -70,6 +70,32 @@ LOCK TABLES `log_actividad` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `log_habitacion`
+--
+
+DROP TABLE IF EXISTS `log_habitacion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `log_habitacion` (
+  `timestamp` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `idHabitacion` int DEFAULT NULL,
+  PRIMARY KEY (`timestamp`),
+  KEY `idHabitacion` (`idHabitacion`),
+  CONSTRAINT `log_habitacion_ibfk_1` FOREIGN KEY (`idHabitacion`) REFERENCES `habitacion` (`idHabitacion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `log_habitacion`
+--
+
+LOCK TABLES `log_habitacion` WRITE;
+/*!40000 ALTER TABLE `log_habitacion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `log_habitacion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `paciente`
 --
 
@@ -79,8 +105,7 @@ DROP TABLE IF EXISTS `paciente`;
 CREATE TABLE `paciente` (
   `idPaciente` int NOT NULL,
   `edad` int DEFAULT NULL,
-  `genero` varchar(20) DEFAULT NULL,
-  `idPaciente;edad;genero` varchar(50) DEFAULT NULL,
+  `genero` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`idPaciente`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -103,4 +128,8 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+<<<<<<< HEAD
 -- Dump completed on 2024-06-11  1:04:49
+=======
+-- Dump completed on 2024-06-11 22:14:54
+>>>>>>> 9932c33 (Cambios en los backups actividad 1)
