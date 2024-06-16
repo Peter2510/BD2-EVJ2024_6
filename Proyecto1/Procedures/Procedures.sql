@@ -42,12 +42,14 @@ BEGIN
     IF (@Email = '')
     BEGIN 
         PRINT 'El email no puede estar vacio';
+        ROLLBACK TRANSACTION;
         RETURN;
     END
 
     IF (@CodCourse < 0)
     BEGIN
         PRINT 'El codigo de curso debe ser mayor a cero';
+        ROLLBACK TRANSACTION;
         RETURN;
     END
 
@@ -58,12 +60,14 @@ BEGIN
     IF (@StudentId IS NULL)
     BEGIN
         PRINT 'El email no esta registrado';
+        ROLLBACK TRANSACTION;
         RETURN;
     END
 
     IF (SELECT COUNT (*) FROM BD2.proyecto1.Course WHERE CodCourse = @CodCourse) = 0
     BEGIN
         PRINT 'El codigo del curso ingresado no corresponde a ningun curso';
+        ROLLBACK TRANSACTION;
         RETURN;
     END
 
@@ -77,6 +81,7 @@ BEGIN
     BEGIN
         PRINT 'El estudiante' + @StudentName +' ya se encuentra asignado al curso ' + @CourseName;
         RETURN;
+        ROLLBACK TRANSACTION;
     END
 
 
@@ -89,6 +94,7 @@ BEGIN
     IF (@StudentCredits < @CodCredits)
     BEGIN
         PRINT 'El estudiante no cuenta con los creditos necesarios para la asignación del curso';
+        ROLLBACK TRANSACTION;
         RETURN;
     END
 
