@@ -1,6 +1,5 @@
-
 /* 2 */
-CREATE PROCEDURE createStudentRol 
+CREATE PROCEDURE PR4 
     @RolName NVARCHAR(30)
 AS
 BEGIN
@@ -24,3 +23,4 @@ BEGIN
         THROW;
     END CATCH;
 END
+
