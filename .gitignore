@@ -1,6 +1,7 @@
-.venv
-env/
+# Ignorar todos los entornos virtuales de Python
 venv/
-ENV/
-env.bak/
-venv.bak/
+env/
+Virtualenv/
+.venv/
+.venv3/
+
