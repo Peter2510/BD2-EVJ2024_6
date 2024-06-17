@@ -14,7 +14,7 @@ def fetch_random_name():
         raise Exception(f"API request failed with status code {response.status_code}")
 
 def main():
-    input_csv = 'unique_courses.csv'  # Ruta del archivo CSV de entrada
+    input_csv = '../cursos.csv'  # Ruta del archivo CSV de entrada
     output_csv = 'output.csv'  # Ruta del archivo CSV de salida
 
     print(f"Leyendo datos del archivo {input_csv}...")

@@ -1,7 +1,7 @@
 import csv
 
-input_file = '../ArchivosCSVDivididos/estudiantes.csv'  # Reemplaza con la ruta de tu archivo de texto
-output_csv = './CSVTemporales/output_names_split_estudiantes.csv'  # Nombre del archivo CSV de salida
+input_file = '../ArchivosCSVDivididos/estudiantes_solo.csv'  # Reemplaza con la ruta de tu archivo de texto
+output_csv = 'nombre_estudiantes_divididos.csv'  # Nombre del archivo CSV de salida
 
 # Lista para almacenar los datos divididos
 data = []
