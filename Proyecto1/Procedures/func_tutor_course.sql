@@ -1,0 +1,13 @@
+-- FUNCION PARA EL TUTOR
+
+CREATE FUNCTION proyecto1.F2
+    @idtutor int 
+AS 
+BEGIN
+    BEGIN TRANSACTION;
+
+
+
+    END
+
+END;
