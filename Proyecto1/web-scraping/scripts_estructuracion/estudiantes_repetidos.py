@@ -13,7 +13,7 @@ df['Name'] = df['Name'].astype(str).str.strip().str.upper()
 df.drop_duplicates(subset=['Name'], keep='first', inplace=True)
 
 # Guardar el archivo CSV modificado con codificación UTF-8
-output_csv = './CSVTemporales/output_unique_names_docentes.csv'  # Reemplaza esto con la ruta donde quieres guardar el archivo modificado
+output_csv = './CSVTemporales/output_unique_names_docentes.csv'
 df.to_csv(output_csv, index=False, encoding='utf-8')
 
 print(f'Archivo guardado como {output_csv}')
