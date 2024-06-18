@@ -10,11 +10,14 @@ BEGIN
     DECLARE @RoleId UNIQUEIDENTIFIER;
     DECLARE @TutorProfileId UNIQUEIDENTIFIER;
     DECLARE @Message NVARCHAR(MAX);
+    DECLARE @FirstName NVARCHAR(50);
+    DECLARE @LastName NVARCHAR(50);
+    DECLARE @TutorCode NVARCHAR(50);
 
     BEGIN TRANSACTION;
 
     -- Verificar si el usuario existe y está activo
-    SELECT @UserId = Id
+    SELECT @UserId = Id, @FirstName = FirstName, @LastName = LastName
     FROM proyecto1.Usuarios
     WHERE Email = @Email AND EmailConfirmed = 1;
 
@@ -62,8 +65,7 @@ BEGIN
         IF EXISTS (
             SELECT 1
             FROM proyecto1.CourseTutor ct
-            INNER JOIN proyecto1.TutorProfile tp ON ct.TutorId = tp.UserId
-            WHERE tp.UserId = @UserId AND ct.CourseCodCourse = @CodCourse
+            WHERE ct.TutorId = @UserId AND ct.CourseCodCourse = @CodCourse
         )
         BEGIN
             PRINT 'El usuario ya es tutor para el curso especificado.';
@@ -103,9 +105,16 @@ BEGIN
         INSERT INTO proyecto1.UsuarioRole (RoleId, UserId, IsLatestVersion)
         VALUES (@RoleId, @UserId, 1);
 
+        -- Crear el código de tutor
+        SET @TutorCode = 'tut' + LEFT(@FirstName, 3) + LEFT(@LastName, 3);
+
+        -- Crear registro en TutorProfile
+        INSERT INTO proyecto1.TutorProfile (UserId, TutorCode)
+        VALUES (@UserId, @TutorCode);
+
         -- Asignar al usuario como tutor del curso especificado
         INSERT INTO proyecto1.CourseTutor (TutorId, CourseCodCourse)
-        VALUES ( @UserId, @CodCourse);
+        VALUES (@UserId, @CodCourse);
 
         -- Registrar en el historial
         INSERT INTO proyecto1.HistoryLog (Date, Description)
@@ -126,7 +135,3 @@ BEGIN
         PRINT 'Notificación enviada al usuario con email ' + @Email;
     END;
 END;
-
-
-
-
