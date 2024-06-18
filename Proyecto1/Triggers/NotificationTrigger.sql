@@ -1,6 +1,4 @@
-
-
-CREATE TRIGGER proyecto1.Trigger9
+ALTER TRIGGER  proyecto1.Trigger9  
 ON proyecto1.Notification
 AFTER INSERT, UPDATE, DELETE
 AS
@@ -21,7 +19,7 @@ BEGIN
         RETURN; -- No debería llegar aquí, pero por seguridad
 
     -- Lógica para manejar las operaciones en las tablas
-    SET @Descripcion = 'Operación ' + @Operacion + ' exitosa en la tabla profile Notification';
+    SET @Descripcion = 'Operación ' + @Operacion + ' exitosa en la tabla Notification';
 
     -- Insertar el registro en la tabla HistoryLog
     INSERT INTO proyecto1.HistoryLog ([Date], Description)
