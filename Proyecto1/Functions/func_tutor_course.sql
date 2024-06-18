@@ -12,7 +12,7 @@ RETURN
         FROM proyecto1.CourseTutor ct
         join proyecto1.Course c on c.CodCourse = ct.CourseCodCourse
         WHERE
-            ct.TutorId = '43B83BB4-7330-45D1-B90C-C1DBAF8D08AA'
-        order by c.CodCourse asc;
+            ct.TutorId = @idtutor
+  
 
 );
