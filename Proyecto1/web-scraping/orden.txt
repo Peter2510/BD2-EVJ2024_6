@@ -1,0 +1,18 @@
+Eliminar cursos repetidos -> 
+
+Agregar nombres a los auxiliares xxx -> 
+
+Dividir nombres de los auxiliares -> 
+Dividir nombre de los docentes -> 
+
+Agregar a los docentes como usuarios ->
+Agregar a los auxiliares como usuarios ->
+
+Agregar info a los auxiliares -> 
+Agregar info a los docentes -> 
+
+Asignar los cursos a los docentes
+Asignar los cursos a los auxiliares
+
+
+
