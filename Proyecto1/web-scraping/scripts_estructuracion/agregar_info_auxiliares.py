@@ -2,8 +2,8 @@ import csv
 import random
 from datetime import datetime, timedelta
 
-input_file = 'docentes_unicos.csv'  # Nombre del archivo de texto de entrada
-output_csv = 'DocentesComoUsuarios.csv'  # Nombre del archivo CSV de salida
+input_file = 'auxiliares_unicos.csv'  # Nombre del archivo de texto de entrada
+output_csv = 'AuxiliaresComoUsuarios.csv'  # Nombre del archivo CSV de salida
 
 # Lista para almacenar los datos modificados
 data = []
