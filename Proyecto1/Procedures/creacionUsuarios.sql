@@ -7,73 +7,114 @@ CREATE PROCEDURE proyecto1.PR1
     @credits int
 AS
 BEGIN
-    BEGIN TRANSACTION;
+    Begin try
+        BEGIN TRANSACTION;
+        --declaraciones
+        DECLARE @Description NVARCHAR(max);
+        DECLARE @ErrorSeverity INT; 
+        -- Buscar el rol estudiante
+        DECLARE @idRol nvarchar(150); 
+        DECLARE @valido BIT;
+        -- mira el rol estudiante
+        SELECT @idRol = id FROM Roles WHERE RoleName = 'Student';
+        IF (@idRol is NULL)
+        BEGIN
+            SET @Description = 'Inserción fallida: el rol no existe';
+            SELECT @Description AS 'Error';
+            SET @ErrorSeverity = 18; 
+            RAISERROR(@Description, @ErrorSeverity, 1);
+            RETURN;
+        END
+        -- Validaciones QUE NO SEA ''
+        IF (@FirstName = '' OR @LastName = '' OR @Email = '' OR @Password = '')
+        BEGIN
+            SET @Description = 'Inserción fallida: no se permite que sea vacio ';
+            SELECT @Description AS 'Error';
+            SET @ErrorSeverity = 18; 
+            RAISERROR(@Description, @ErrorSeverity, 1);
+            RETURN;
+        END
+        -- QUE NO SEA NULO
+	       IF (@FirstName IS NULL  OR
+	        @LastName IS NULL OR
+	        @Email IS NULL OR 
+	        @Password IS NULL or @DateOfBirth IS NULL )
+        BEGIN
+            SET @Description = 'Inserción fallida: no se permite que sea nulo';
+            SELECT @Description AS 'Error';
+            SET @ErrorSeverity = 18; 
+            RAISERROR(@Description, @ErrorSeverity, 1);
+            RETURN;
+        END
 
-    -- Buscar el rol estudiante
-    DECLARE @idRol nvarchar(150); 
-    SELECT @idRol = id FROM Roles WHERE RoleName = 'Student';
+        -- Verificar que no exista el correo en otro usuario
+        IF EXISTS (SELECT 1 FROM Usuarios WHERE Email = @Email)
+        BEGIN
+            SET @Description = 'Inserción fallida: ya existe el usuario con este correo registrado';
+            SELECT @Description AS 'Error';
+            SET @ErrorSeverity = 18; 
+            RAISERROR(@Description, @ErrorSeverity, 1);
+            RETURN;
+        END
 
-    -- Validaciones
-    IF (@FirstName = '' OR @LastName = '' OR @Email = '' OR @Password = '')
-    BEGIN
-        ROLLBACK TRANSACTION;
-        PRINT 'NO HAY INFORMACION ASOCIADA';
-        RETURN;
-    END
+             -- Verificación de créditos del estudiante
+        IF (@credits < 0)
+        BEGIN
+            SET @Description = 'Inserción fallida: no se permite que tenga creditos negativos';
+            SELECT @Description AS 'Error';
+            SET @ErrorSeverity = 18; 
+            RAISERROR(@Description, @ErrorSeverity, 1);
+            RETURN;
+        END
 
-    -- Verificar que no exista el correo en otro usuario
-    IF EXISTS (SELECT 1 FROM Usuarios WHERE Email = @Email)
-    BEGIN
-        ROLLBACK TRANSACTION;
-        PRINT 'YA EXISTE EL CORREO EN OTRO USUARIO';
-        RETURN;
-    END
+        EXEC proyecto1.PR6 'Usuarios', @Firstname, @Lastname, NULL, NULL, @valido OUTPUT;
+        IF(@valido = 0)
+        BEGIN
+            SET @Description = 'Los campos son incorrectos, solo deben contener letras';
+            SELECT @Description AS 'Error';
+            SET @ErrorSeverity = 18; 
+            RAISERROR(@Description, @ErrorSeverity, 1);
+            RETURN;
+        END
 
-    -- Generar un nuevo ID para el usuario
-    DECLARE @idUsuario UNIQUEIDENTIFIER;
-    SET @idUsuario = NEWID();
+        -- Generar un nuevo ID para el usuario
+        DECLARE @idUsuario UNIQUEIDENTIFIER;
+        SET @idUsuario = NEWID();
 
-    -- Insertar en la tabla Usuarios
-    INSERT INTO Usuarios (Id, Firstname, Lastname, Email, DateOfBirth, Password, LastChanges, EmailConfirmed)
-    VALUES (@idUsuario, @FirstName, @LastName, @Email, @DateOfBirth, @Password, GETDATE(), 0);
+        -- Insertar en la tabla Usuarios
+        INSERT INTO Usuarios (Id, Firstname, Lastname, Email, DateOfBirth, Password, LastChanges, EmailConfirmed)
+        VALUES (@idUsuario, @FirstName, @LastName, @Email, @DateOfBirth, @Password, GETDATE(), 0);
 
-    -- Insertar en la tabla UsuarioRole
-    INSERT INTO UsuarioRole (RoleId, UserId, IsLatestVersion)
-    VALUES ( @idRol, @idUsuario, 1);
+        -- Insertar en la tabla UsuarioRole
+        INSERT INTO UsuarioRole (RoleId, UserId, IsLatestVersion)
+        VALUES ( @idRol, @idUsuario, 1);
 
-    -- Verificación de créditos del estudiante
-    IF (@credits < 0)
-    BEGIN
-        ROLLBACK TRANSACTION;
-        PRINT 'UN ESTUDIANTE NO PUEDE TENER CREDITOS NEGATIVOS';
-        RETURN;
-    END
-
-    -- Insertar en la tabla ProfileStudent
-    INSERT INTO ProfileStudent ( UserId, Credits)
-    VALUES ( @idUsuario, @credits);
+        -- Insertar en la tabla ProfileStudent
+        INSERT INTO ProfileStudent ( UserId, Credits)
+        VALUES ( @idUsuario, @credits);
 
 
-    -- Insertar en la tabla TFA
-    INSERT INTO TFA (UserId, Status, LastUpdate)
-    VALUES (@idUsuario, 1, GETDATE());
+        -- Insertar en la tabla TFA
+        INSERT INTO TFA (UserId, Status, LastUpdate)
+        VALUES (@idUsuario, 1, GETDATE());
 
-    -- Enviar notificación
-    DECLARE @mensaje nvarchar(200);
-    SET @mensaje = N'El usuario ha sido registrado correctamente, puede ver su perfil';
+        -- Enviar notificación
+        DECLARE @mensaje nvarchar(200);
+        SET @mensaje = N'El usuario ha sido registrado correctamente, puede ver su perfil';
 
-    INSERT INTO Notification (UserId, Message, Date)
-    VALUES (@idUsuario, @mensaje, GETDATE());
+        INSERT INTO Notification (UserId, Message, Date)
+        VALUES (@idUsuario, @mensaje, GETDATE());
 
-    -- Confirmar o revertir la transacción
-    IF @@ERROR = 0
-    BEGIN 
+        -- HACER EL TRY
         COMMIT TRANSACTION;
         PRINT 'EL INGRESO HA SIDO EXITOSO';
-    END
-    ELSE 
-    BEGIN
+    END TRY 
+    BEGIN CATCH
         ROLLBACK TRANSACTION;
+        SET @Description = ERROR_MESSAGE();
+        INSERT INTO HistoryLog (Date, Description)
+        VALUES (GETDATE(), @Description);
         PRINT 'HUBO ERRORES EN LA TRANSACCION, ABORTANDOLA';
-    END
+        RAISERROR(@Description, 18, 1);
+    END CATCH
 END;
