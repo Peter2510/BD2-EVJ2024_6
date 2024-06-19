@@ -1,6 +1,5 @@
--- TABLA Roles
-CREATE OR ALTER TRIGGER proyecto1.Trigger1
-ON proyecto1.Roles
+CREATE OR ALTER TRIGGER proyecto1.Trigger3
+ON proyecto1.CourseTutor
 AFTER INSERT, UPDATE, DELETE
 AS
 BEGIN
@@ -28,9 +27,8 @@ BEGIN
 END;
 
 
--- TABLA CourseAssignment
-CREATE OR ALTER TRIGGER proyecto1.Trigger2
-ON proyecto1.CourseAssignment
+CREATE OR ALTER TRIGGER proyecto1.Trigger10
+ON proyecto1.TutorProfile
 AFTER INSERT, UPDATE, DELETE
 AS
 BEGIN
@@ -50,11 +48,10 @@ BEGIN
         RETURN; -- No debería llegar aquí, pero por seguridad
 
     -- Lógica para manejar las operaciones en las tablas
-    SET @Descripcion = 'Operación ' + @Operacion + ' exitosa en la tabla CourseAssignment';
+    SET @Descripcion = 'Operación ' + @Operacion + ' exitosa en la tabla Roles';
 
     -- Insertar el registro en la tabla HistoryLog
     INSERT INTO proyecto1.HistoryLog ([Date], Description)
     VALUES (GETDATE(), @Descripcion);
 END;
-
 
