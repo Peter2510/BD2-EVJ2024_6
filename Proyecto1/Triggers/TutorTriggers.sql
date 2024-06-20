@@ -19,7 +19,7 @@ BEGIN
         RETURN; -- No debería llegar aquí, pero por seguridad
 
     -- Lógica para manejar las operaciones en las tablas
-    SET @Descripcion = 'Operación ' + @Operacion + ' exitosa en la tabla Roles';
+    SET @Descripcion = 'Operación ' + @Operacion + ' exitosa en la tabla CourseTutor';
 
     -- Insertar el registro en la tabla HistoryLog
     INSERT INTO proyecto1.HistoryLog ([Date], Description)
@@ -48,10 +48,9 @@ BEGIN
         RETURN; -- No debería llegar aquí, pero por seguridad
 
     -- Lógica para manejar las operaciones en las tablas
-    SET @Descripcion = 'Operación ' + @Operacion + ' exitosa en la tabla Roles';
+    SET @Descripcion = 'Operación ' + @Operacion + ' exitosa en la tabla TutorProfile';
 
     -- Insertar el registro en la tabla HistoryLog
     INSERT INTO proyecto1.HistoryLog ([Date], Description)
     VALUES (GETDATE(), @Descripcion);
 END;
-
