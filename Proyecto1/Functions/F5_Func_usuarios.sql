@@ -24,7 +24,3 @@ RETURN
     WHERE
         u.Id = @UserId
 );
-
-
-
-SELECT * FROM proyecto1.F5('7E09E5FD-1701-451A-A714-001A32D5844F');

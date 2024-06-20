@@ -4,7 +4,6 @@ CREATE PROCEDURE proyecto1.PR5
     @creditos int
 AS
 BEGIN
-	    -- Intentar insertar el curso
 
     BEGIN TRY
     BEGIN TRANSACTION;

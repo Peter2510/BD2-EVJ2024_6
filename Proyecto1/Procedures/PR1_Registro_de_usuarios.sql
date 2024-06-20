@@ -82,27 +82,27 @@ BEGIN
         SET @idUsuario = NEWID();
 
         -- Insertar en la tabla Usuarios
-        INSERT INTO Usuarios (Id, Firstname, Lastname, Email, DateOfBirth, Password, LastChanges, EmailConfirmed)
+        INSERT INTO proyecto1.Usuarios (Id, Firstname, Lastname, Email, DateOfBirth, Password, LastChanges, EmailConfirmed)
         VALUES (@idUsuario, @FirstName, @LastName, @Email, @DateOfBirth, @Password, GETDATE(), 0);
 
         -- Insertar en la tabla UsuarioRole
-        INSERT INTO UsuarioRole (RoleId, UserId, IsLatestVersion)
+        INSERT INTO proyecto1.UsuarioRole (RoleId, UserId, IsLatestVersion)
         VALUES ( @idRol, @idUsuario, 1);
 
         -- Insertar en la tabla ProfileStudent
-        INSERT INTO ProfileStudent ( UserId, Credits)
+        INSERT INTO proyecto1.ProfileStudent ( UserId, Credits)
         VALUES ( @idUsuario, @credits);
 
 
         -- Insertar en la tabla TFA
-        INSERT INTO TFA (UserId, Status, LastUpdate)
+        INSERT INTO proyecto1.TFA (UserId, Status, LastUpdate)
         VALUES (@idUsuario, 1, GETDATE());
 
         -- Enviar notificación
         DECLARE @mensaje nvarchar(200);
         SET @mensaje = N'El usuario ha sido registrado correctamente, puede ver su perfil';
 
-        INSERT INTO Notification (UserId, Message, Date)
+        INSERT INTO proyecto1.Notification (UserId, Message, Date)
         VALUES (@idUsuario, @mensaje, GETDATE());
 
         -- HACER EL TRY
@@ -112,7 +112,7 @@ BEGIN
     BEGIN CATCH
         ROLLBACK TRANSACTION;
         SET @Description = ERROR_MESSAGE();
-        INSERT INTO HistoryLog (Date, Description)
+        INSERT INTO proyecto1.HistoryLog (Date, Description)
         VALUES (GETDATE(), @Description);
         PRINT 'HUBO ERRORES EN LA TRANSACCION, ABORTANDOLA';
         RAISERROR(@Description, 18, 1);
