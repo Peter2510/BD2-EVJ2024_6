@@ -1,4 +1,4 @@
-ALTER TRIGGER  proyecto1.Trigger9  
+CREATE OR ALTER TRIGGER  proyecto1.Trigger9  
 ON proyecto1.Notification
 AFTER INSERT, UPDATE, DELETE
 AS

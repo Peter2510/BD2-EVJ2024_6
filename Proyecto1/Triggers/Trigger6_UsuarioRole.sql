@@ -1,5 +1,3 @@
-
-
 CREATE TRIGGER proyecto1.Trigger6
 ON proyecto1.UsuarioRole
 AFTER INSERT, UPDATE, DELETE
