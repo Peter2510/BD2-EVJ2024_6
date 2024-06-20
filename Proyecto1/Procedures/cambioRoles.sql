@@ -13,19 +13,23 @@ BEGIN
     DECLARE @FirstName NVARCHAR(50);
     DECLARE @LastName NVARCHAR(50);
     DECLARE @TutorCode NVARCHAR(50);
-
-    BEGIN TRANSACTION;
+    DECLARE @HistoryMessage NVARCHAR(MAX);
 
     -- Verificar si el usuario existe y está activo
     SELECT @UserId = Id, @FirstName = FirstName, @LastName = LastName
     FROM proyecto1.Usuarios
     WHERE Email = @Email AND EmailConfirmed = 1;
 
-    -- Si el usuario no existe o no está activo, imprimir mensaje y salir
+    -- Si el usuario no existe o no está activo, registrar en HistoryLog y salir
     IF @UserId IS NULL
     BEGIN
-        PRINT 'El usuario no existe o no está activo.';
-        ROLLBACK TRANSACTION;
+        SET @HistoryMessage = 'El usuario con email ' + @Email + ' no existe o no está activo.';
+        PRINT @HistoryMessage;
+
+        -- Registrar en HistoryLog
+        INSERT INTO proyecto1.HistoryLog (Date, Description)
+        VALUES (GETDATE(), @HistoryMessage);
+
         RETURN;
     END;
 
@@ -34,11 +38,16 @@ BEGIN
     FROM proyecto1.Roles
     WHERE RoleName = 'Tutor';
 
-    -- Si no se encontró el RoleId para "Tutor", imprimir mensaje y salir
+    -- Si no se encontró el RoleId para "Tutor", registrar en HistoryLog y salir
     IF @RoleId IS NULL
     BEGIN
-        PRINT 'El rol de "Tutor" no está definido en la tabla de Roles.';
-        ROLLBACK TRANSACTION;
+        SET @HistoryMessage = 'El rol de "Tutor" no está definido en la tabla de Roles.';
+        PRINT @HistoryMessage;
+
+        -- Registrar en HistoryLog
+        INSERT INTO proyecto1.HistoryLog (Date, Description)
+        VALUES (GETDATE(), @HistoryMessage);
+
         RETURN;
     END;
 
@@ -49,8 +58,13 @@ BEGIN
         WHERE CodCourse = @CodCourse
     )
     BEGIN
-        PRINT 'El curso especificado no existe.';
-        ROLLBACK TRANSACTION;
+        SET @HistoryMessage = 'El curso especificado con código ' + CAST(@CodCourse AS NVARCHAR) + ' no existe.';
+        PRINT @HistoryMessage;
+
+        -- Registrar en HistoryLog
+        INSERT INTO proyecto1.HistoryLog (Date, Description)
+        VALUES (GETDATE(), @HistoryMessage);
+
         RETURN;
     END;
 
@@ -68,8 +82,13 @@ BEGIN
             WHERE ct.TutorId = @UserId AND ct.CourseCodCourse = @CodCourse
         )
         BEGIN
-            PRINT 'El usuario ya es tutor para el curso especificado.';
-            ROLLBACK TRANSACTION;
+            SET @HistoryMessage = 'El usuario con email ' + @Email + ' ya es tutor para el curso especificado con código ' + CAST(@CodCourse AS NVARCHAR) + '.';
+            PRINT @HistoryMessage;
+
+            -- Registrar en HistoryLog
+            INSERT INTO proyecto1.HistoryLog (Date, Description)
+            VALUES (GETDATE(), @HistoryMessage);
+
             RETURN;
         END
         ELSE
@@ -79,19 +98,22 @@ BEGIN
             VALUES (@UserId, @CodCourse);
 
             -- Registrar en el historial
+            SET @HistoryMessage = 'Asignación exitosa como tutor para el curso con código ' + CAST(@CodCourse AS NVARCHAR) + ' para el usuario con email ' + @Email + '.';
+            PRINT @HistoryMessage;
+
+            -- Registrar en HistoryLog
             INSERT INTO proyecto1.HistoryLog (Date, Description)
-            VALUES (GETDATE(), 'Asignación exitosa como tutor para el curso con email ' + @Email);
-
-            -- Confirmar la transacción
-            COMMIT TRANSACTION;
-
-            -- Imprimir mensaje de éxito
-            PRINT 'Asignación como tutor exitosa para el curso con email ' + @Email;
+            VALUES (GETDATE(), @HistoryMessage);
 
             -- Enviar correo de notificación
-            SET @Message = 'Se le ha asignado el rol de Tutor para el curso especificado.';
+            SET @Message = 'Se le ha asignado el rol de Tutor para el curso con código ' + CAST(@CodCourse AS NVARCHAR) + '.';
             INSERT INTO proyecto1.Notification (UserId, Message, Date)
             VALUES (@UserId, @Message, GETDATE());
+
+            -- Registrar la notificación enviada en el historial
+            SET @HistoryMessage = 'Notificación enviada: ' + @Message;
+            INSERT INTO proyecto1.HistoryLog (Date, Description)
+            VALUES (GETDATE(), @HistoryMessage);
 
             -- Imprimir mensaje de notificación enviada
             PRINT 'Notificación enviada al usuario con email ' + @Email;
@@ -117,21 +139,27 @@ BEGIN
         VALUES (@UserId, @CodCourse);
 
         -- Registrar en el historial
+        SET @HistoryMessage = 'Cambio de rol a Tutor exitoso para el usuario con email ' + @Email + ' para el curso con código ' + CAST(@CodCourse AS NVARCHAR) + '.';
+        PRINT @HistoryMessage;
+
+        -- Registrar en HistoryLog
         INSERT INTO proyecto1.HistoryLog (Date, Description)
-        VALUES (GETDATE(), 'Cambio de rol exitoso para usuario con email ' + @Email);
-
-        -- Confirmar la transacción
-        COMMIT TRANSACTION;
-
-        -- Imprimir mensaje de éxito
-        PRINT 'Cambio de rol a Tutor exitoso para el usuario con email ' + @Email;
+        VALUES (GETDATE(), @HistoryMessage);
 
         -- Enviar correo de notificación
-        SET @Message = 'Se le ha asignado el rol de Tutor para el curso especificado.';
+        SET @Message = 'Se le ha asignado el rol de Tutor para el curso con código ' + CAST(@CodCourse AS NVARCHAR) + '.';
         INSERT INTO proyecto1.Notification (UserId, Message, Date)
         VALUES (@UserId, @Message, GETDATE());
 
+        -- Registrar la notificación enviada en el historial
+        SET @HistoryMessage = 'Notificación enviada: ' + @Message;
+        INSERT INTO proyecto1.HistoryLog (Date, Description)
+        VALUES (GETDATE(), @HistoryMessage);
+
         -- Imprimir mensaje de notificación enviada
         PRINT 'Notificación enviada al usuario con email ' + @Email;
+
+        RETURN;
     END;
 END;
+

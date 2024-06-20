@@ -23,9 +23,10 @@ BEGIN
         -- Validar que el nombre solo contenga letras, espacios y opcionalmente termine en un número
         IF ISNULL(@Name, '') NOT LIKE '%[^a-zA-Z0-9 ]%' -- Solo permite letras, números y espacios
            AND @Name NOT LIKE '[0-9]%' -- No debe comenzar con un número
-           AND @Name LIKE '%[a-zA-Z]%[a-zA-Z ]%' -- Debe contener al menos dos palabras
+           AND @Name LIKE '%[a-zA-Z] [a-zA-Z]%' -- Debe contener al menos dos palabras
+           AND @Name NOT LIKE '%[0-9]%[a-zA-Z]%' -- No debe tener números mezclados con letras dentro de las palabras
            AND (
-               @Name NOT LIKE '%[0-9]%[a-zA-Z]%' -- No debe tener números mezclados con letras dentro de las palabras
+               @Name NOT LIKE '%[0-9][^ ]%' -- No debe tener números seguidos de caracteres que no sean espacios
                OR @Name LIKE '% [0-9]' -- Puede terminar con un número precedido de un espacio
            )
         BEGIN
