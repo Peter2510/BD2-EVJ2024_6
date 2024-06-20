@@ -11,7 +11,7 @@ BEGIN
     DECLARE @Description nvarchar(max);
     DECLARE @ErrorSeverity INT;
     DECLARE @valido BIT;
-    EXEC proyecto1.PR6 'Course',NULL,NULL, @Name, @CreditsRequired, @valido OUTPUT ;
+    EXEC proyecto1.PR6 'Course',NULL,NULL, @nombre, @creditos, @valido OUTPUT ;
 
     IF @valido =0
         BEGIN
