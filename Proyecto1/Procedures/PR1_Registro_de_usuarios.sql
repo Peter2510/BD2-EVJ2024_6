@@ -19,7 +19,7 @@ BEGIN
         SELECT @idRol = id FROM Roles WHERE RoleName = 'Student';
         IF (@idRol is NULL)
         BEGIN
-            SET @Description = 'Inserción fallida: el rol no existe';
+            SET @Description = 'Inserción fallida: el Rol no existe';
             SELECT @Description AS 'Error';
             SET @ErrorSeverity = 18; 
             RAISERROR(@Description, @ErrorSeverity, 1);
@@ -28,7 +28,7 @@ BEGIN
         -- Validaciones QUE NO SEA ''
         IF (@FirstName = '' OR @LastName = '' OR @Email = '' OR @Password = '')
         BEGIN
-            SET @Description = 'Inserción fallida: no se permite que sea vacio ';
+            SET @Description = 'Inserción fallida: No se permite que algún valor este vacio';
             SELECT @Description AS 'Error';
             SET @ErrorSeverity = 18; 
             RAISERROR(@Description, @ErrorSeverity, 1);
@@ -38,9 +38,10 @@ BEGIN
 	       IF (@FirstName IS NULL  OR
 	        @LastName IS NULL OR
 	        @Email IS NULL OR 
-	        @Password IS NULL or @DateOfBirth IS NULL )
+	        @Password IS NULL or @DateOfBirth IS NULL OR
+            @credits IS NULL)
         BEGIN
-            SET @Description = 'Inserción fallida: no se permite que sea nulo';
+            SET @Description = 'Inserción fallida: No se permite que algún valor sea nulo';
             SELECT @Description AS 'Error';
             SET @ErrorSeverity = 18; 
             RAISERROR(@Description, @ErrorSeverity, 1);
@@ -60,7 +61,7 @@ BEGIN
              -- Verificación de créditos del estudiante
         IF (@credits < 0)
         BEGIN
-            SET @Description = 'Inserción fallida: no se permite que tenga creditos negativos';
+            SET @Description = 'Inserción fallida: Los creditos no deben ser negativos';
             SELECT @Description AS 'Error';
             SET @ErrorSeverity = 18; 
             RAISERROR(@Description, @ErrorSeverity, 1);
@@ -70,7 +71,7 @@ BEGIN
         EXEC proyecto1.PR6 'Usuarios', @Firstname, @Lastname, NULL, NULL, @valido OUTPUT;
         IF(@valido = 0)
         BEGIN
-            SET @Description = 'Los campos son incorrectos, solo deben contener letras';
+            SET @Description = 'Algun campo es incorrecto, los campos solo deben contener letras';
             SELECT @Description AS 'Error';
             SET @ErrorSeverity = 18; 
             RAISERROR(@Description, @ErrorSeverity, 1);
@@ -83,7 +84,7 @@ BEGIN
 
         -- Insertar en la tabla Usuarios
         INSERT INTO proyecto1.Usuarios (Id, Firstname, Lastname, Email, DateOfBirth, Password, LastChanges, EmailConfirmed)
-        VALUES (@idUsuario, @FirstName, @LastName, @Email, @DateOfBirth, @Password, GETDATE(), 0);
+        VALUES (@idUsuario, @FirstName, @LastName, @Email, @DateOfBirth, @Password, GETDATE(), 1);
 
         -- Insertar en la tabla UsuarioRole
         INSERT INTO proyecto1.UsuarioRole (RoleId, UserId, IsLatestVersion)

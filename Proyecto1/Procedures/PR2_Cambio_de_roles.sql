@@ -75,7 +75,7 @@ BEGIN
         WHERE ur.UserId = @UserId AND ur.RoleId = @RoleId
     )
     BEGIN
-        -- Verificar si el usuario ya es tutor para el curso especificado
+        
         IF EXISTS (
             SELECT 1
             FROM proyecto1.CourseTutor ct
@@ -128,7 +128,7 @@ BEGIN
         VALUES (@RoleId, @UserId, 1);
 
         -- Crear el código de tutor
-        SET @TutorCode = 'tut' + LEFT(@FirstName, 3) + LEFT(@LastName, 3);
+        SET @TutorCode = NEWID();
 
         -- Crear registro en TutorProfile
         INSERT INTO proyecto1.TutorProfile (UserId, TutorCode)
@@ -136,7 +136,7 @@ BEGIN
 
         -- Asignar al usuario como tutor del curso especificado
         INSERT INTO proyecto1.CourseTutor (TutorId, CourseCodCourse)
-        VALUES (@UserId, @CodCourse);
+        VALUES (@TutorCode, @CodCourse);
 
         -- Registrar en el historial
         SET @HistoryMessage = 'Cambio de rol a Tutor exitoso para el usuario con email ' + @Email + ' para el curso con código ' + CAST(@CodCourse AS NVARCHAR) + '.';
