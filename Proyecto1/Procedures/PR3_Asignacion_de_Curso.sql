@@ -66,6 +66,14 @@ BEGIN
 
         INSERT INTO BD2.proyecto1.Notification (UserId, Message, Date) 
         VALUES (@StudentId, 'El estudiante ' + @StudentName + ' se ha asignado al curso ' + @CourseName, GETDATE());
+
+        DECLARE @IdTutor UNIQUEIDENTIFIER;
+
+        SELECT @IdTutor = TutorId FROM CourseTutor WHERE CourseCodCourse = @CodCourse;
+
+        INSERT INTO BD2.proyecto1.Notification (UserId, Message, Date) 
+        VALUES (@IdTutor, 'El estudiante ' + @StudentName + ' se ha asignado al curso ' + @CourseName + ' que usted imparte', GETDATE());
+
         INSERT INTO BD2.proyecto1.HistoryLog(Description, Date) 
         VALUES ('Operación INSERT exitosa en la tabla CourseAssignment, el estudiante ' + @StudentName + ' se ha asignado al curso ' + @CourseName, GETDATE());
 
