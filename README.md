@@ -4,8 +4,6 @@ Repositorio para la práctica y los proyectos del Laboratorio de Bases de Datos 
 
 # Integrantes Grupo 6
 
-* Randy Marcelino Sum Coyoy 201230463, 2253625030901
-
-* Pedro Ricardo Gordillo González 202031683, 3353152670901
-
-* Carlos Alexis Ovalle de León  202031064, 3133359310901
+* Randy Marcelino Sum Coyoy
+* Pedro Ricardo Gordillo González 
+* Carlos Alexis Ovalle de León 
